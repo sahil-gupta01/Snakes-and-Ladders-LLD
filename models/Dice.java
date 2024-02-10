@@ -4,13 +4,13 @@ import java.util.Random;
 
 public class Dice {
 
-    private Random rand;
+    private Random random;
 
     public Dice() {
-        rand = new Random();
+        random = new Random();
     }
 
     public int rollDice(){
-        return rand.nextInt(6) + 1;
+        return random.nextInt(6) + 1;
     }
 }

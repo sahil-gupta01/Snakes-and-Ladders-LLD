@@ -11,14 +11,18 @@ public class Game {
     private Dice dice;
     private List<Move> moves;
     private int currPlayerInd;
+    private List<Snake> snakes;
+    private List<Ladder> ladders;
 
-    public Game(int dimension, List<Player> players, int currPlayerInd) {
+    public Game(int dimension, List<Player> players, int currPlayerInd, List<Snake> snakes, List<Ladder> ladders) {
         this.board = new Board(dimension);
         this.players = players;
         this.currPlayerInd = currPlayerInd;
         this.gameStatus = GameStatus.RUNNING;
         moves =new ArrayList<>();
         dice = new Dice();
+        this.snakes = snakes;
+        this.ladders = ladders;
     }
 
     public Board getBoard() {
@@ -73,6 +77,22 @@ public class Game {
         board.printBoard(players);
     }
 
+    public List<Snake> getSnakes() {
+        return snakes;
+    }
+
+    public void setSnakes(List<Snake> snakes) {
+        this.snakes = snakes;
+    }
+
+    public List<Ladder> getLadders() {
+        return ladders;
+    }
+
+    public void setLadders(List<Ladder> ladders) {
+        this.ladders = ladders;
+    }
+
     public void makeMove() {
         Player currPlayer = players.get(currPlayerInd);
         Move currMove = new Move();
@@ -85,10 +105,33 @@ public class Game {
 
         if (checkOutOfBoard(newPosition)) return;
 
+        newPosition = checkForLadder(newPosition);
+        newPosition = checkForSnake(newPosition);
+
         currPlayer.setPosition(newPosition);
         currMove.setFinalPosition(newPosition);
         moves.add(currMove);
         currPlayerInd = (currPlayerInd+1)%players.size();
+    }
+
+    private int checkForSnake(int newPosition) {
+        for(Snake snake:snakes){
+            if(snake.getHead() == newPosition){
+                System.out.println("-------------------Oops! Snake bit-------------------");
+                newPosition = snake.getTail();
+            }
+        }
+        return newPosition;
+    }
+
+    private int checkForLadder(int newPosition) {
+        for(Ladder ladder:ladders){
+            if(ladder.getLadderEntry() == newPosition){
+                System.out.println("----------------Wow! You got a ladder----------------");
+                newPosition = ladder.getLadderExit();
+            }
+        }
+        return newPosition;
     }
 
     private boolean checkOutOfBoard(int newPosition) {
@@ -101,7 +144,7 @@ public class Game {
     }
 
     private boolean checkWinner(Player currPlayer, int newPosition) {
-        if(currPlayer.getPosition() == 99){
+        if(newPosition == 99){
             winner = currPlayer;
             currPlayer.setPosition(newPosition);
             gameStatus = GameStatus.COMPLETED;

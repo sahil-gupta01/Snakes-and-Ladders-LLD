@@ -17,7 +17,7 @@ public class Board {
         return dimension;
     }
 
-    public void setDimension(int dimension) {
+    public void currPositionPlayersListDimension(int dimension) {
         this.dimension = dimension;
     }
 
@@ -25,21 +25,20 @@ public class Board {
         int row = (int)Math.sqrt(dimension);
         for(int i =0;i<dimension;i++){
             if(i % row == 0)System.out.println();
-            Set<Player> set = new HashSet<>();
+            List<Player> currPositionPlayersList = new ArrayList<>();
             for(Player player:playersList){
                 if(player.getPosition() == i){
-                    set.add(player);
+                    currPositionPlayersList.add(player);
                 }
             }
-            if(set.size() == 0){
+            if(currPositionPlayersList.isEmpty()){
                 System.out.print("|   |");
             }
-            else if(set.size() == 1){
-                char symbol = set.iterator().next().getSymbol();
-                System.out.print("| " +symbol+ " |");
+            else if(currPositionPlayersList.size() == 1){
+                System.out.print("| " +currPositionPlayersList.get(0).getSymbol()+ " |");
             }
             else{
-                System.out.print("|@" + set.size() + " |");
+                System.out.print("|@" + currPositionPlayersList.size() + " |");
             }
         }
         System.out.println();

@@ -14,7 +14,7 @@ public class Player {
         this.playerId = playerId;
         this.symbol = symbol;
         scanner = new Scanner(System.in);
-        position = 96;
+        position = -1;
     }
 
     public String getName() {
@@ -50,9 +50,9 @@ public class Player {
     }
 
     public int move(Dice dice){
-        System.out.println(name + " its your turn, press r ot type roll to roll the dice");
+        System.out.println(name + " its your turn, press 'r' to roll the dice");
         String input = scanner.next();
-        while(!input.equalsIgnoreCase("roll") && !input.equalsIgnoreCase("r")){
+        while(!input.equalsIgnoreCase("r")){
             System.out.println("Wrong input, try again");
             input = scanner.next();
         }
